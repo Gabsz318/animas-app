@@ -23,7 +23,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.config),
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule
