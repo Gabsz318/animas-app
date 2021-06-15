@@ -1,0 +1,20 @@
+.header {
+    align-items: center;
+    background: rgb(207, 214, 0);
+    background: radial-gradient(circle, rgba(207, 214, 0, 1) 40%, rgba(0, 122, 42, 1) 79%);
+    display: flex;
+    justify-content: center;
+    &__img {
+        height: 6rem;
+    }
+}
+
+.login {
+    background-image: url("../../assets/login.png");
+    background-position-x: center;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    height: calc(100vh - 6rem);
+    padding-top: 3rem;
+    width: 100vw;
+}
