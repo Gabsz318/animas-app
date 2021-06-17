@@ -3,13 +3,26 @@
         <img class="header__img" src="assets/logo.png" />
     </div>
     <div class="login">
+        <ion-item *ngIf="error" color="danger">
+            <ion-label>El usuario/contraseña no coinciden</ion-label>
+        </ion-item>
         <ion-item>
             <ion-label position="floating">Usuario</ion-label>
-            <ion-input></ion-input>
+            <ion-input type="email" [(ngModel)]="username"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="full" tappable (click)="login()">
+                        Inicia sesión
+                        <ion-ripple-effect></ion-ripple-effect>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
 </ion-content>
