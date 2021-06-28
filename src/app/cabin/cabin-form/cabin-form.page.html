@@ -1,9 +1,37 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>cabin-form</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>Crear cabaña</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-button *ngIf="cabinId" color="danger" (click)="delete()">
+        Eliminar
+    </ion-button>
+    <ion-button *ngIf="!cabinId" color="success" tappable (click)="addCabin()">
+        Crear
+        <ion-ripple-effect></ion-ripple-effect>
+    </ion-button>
+    <ion-button *ngIf="cabinId" color="success" tappable (click)="editCabin()">
+        Guardar
+        <ion-ripple-effect></ion-ripple-effect>
+    </ion-button>
+    <ion-list>
+        <ion-item *ngFor="let field of cabinFields">
+            <ion-label>{{field.label}}</ion-label>
+            <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="field.type === 'number' || field.type === 'text'">
+                    <ion-input [disabled]="field.fieldName === 'cabin_name'" [type]="field.type" [(ngModel)]="cabin[field.fieldName]"></ion-input>
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'select'">
+                    <ion-select placeholder="{{'Select' + field.label}}" [(ngModel)]="cabin[field.fieldName]">
+                        <ion-select-option *ngFor="let option of field.options; let i = index" [value]="i">
+                            {{option}}
+                        </ion-select-option>
+                    </ion-select>
+                </ng-container>
+            </ng-container>
+        </ion-item>
+    </ion-list>
 
 </ion-content>

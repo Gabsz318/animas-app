@@ -1,9 +1,59 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>disccounts</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>Promociones</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="createCabin()">
+        <ion-fab-button color="tertiary">
+            <ion-icon class="white" name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngFor="let disccount of disccounts" size="6">
+                <ion-card (click)="editCabin(disccount.id)">
+                    <ion-card-header>
+                        <ion-icon name="disccount"></ion-icon>
+                        <ion-card-title class="flex-center">
+                            Promo {{disccount.percentage}} %</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-subtitle class="flex-center">Valida de:<br> {{disccount?.formattedStartDate}} - {{disccount?.formattedEndDate}}
+                    </ion-card-subtitle>
+                    <ion-card-content class="flex ion-align-items-center ion-justify-content-center">
+                        <ion-icon [style.font-size]="'1.5rem'" [style.color]="status && status[disccount.status] ? status[disccount.status]?.color:''" [name]="status && status[disccount.status] ? status[disccount.status]?.icon :''">
+                        </ion-icon>
+                        &nbsp;{{disccount.status}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
+<ion-tab-bar slot="bottom">
+    <ion-tab-button href="home-admin">
+        <ion-label>Inicio</ion-label>
+        <ion-icon name="home-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="cabins">
+        <ion-label>Cabañas</ion-label>
+        <ion-icon name="cabin"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="bookings">
+        <ion-label>Reservas</ion-label>
+        <ion-icon name="ticket-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="clients">
+        <ion-label>Clientes</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="disccounts">
+        <ion-label>Promos</ion-label>
+        <ion-icon name="disccount"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button (click)="logout()">
+        <ion-label>Salir</ion-label>
+        <ion-icon name="log-out-outline"></ion-icon>
+    </ion-tab-button>
+</ion-tab-bar>

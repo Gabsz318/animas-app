@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-home-readonly',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-readonly.page.scss'],
 })
 export class HomeReadonlyPage implements OnInit {
+  constructor(private readonly angularFireAuth: AngularFireAuth) {}
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit() {}
+  async logout() {
+    await this.angularFireAuth.signOut();
   }
-
 }

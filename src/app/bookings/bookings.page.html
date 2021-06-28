@@ -1,9 +1,49 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>bookings</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>Reservas</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-list>
+        <ion-item *ngFor="let booking of bookings" (click)="editBooking(booking.id)">
+            <ion-label>
+                {{booking.clientName}}
+                <br> {{booking.formattedStartDate}} - {{booking.formattedEndDate}}
+                <br> Cabaña {{booking.cabinName}}
+                <br>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button color="tertiary" (click)="addBooking()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
+<ion-tab-bar slot="bottom">
+    <ion-tab-button href="home-admin">
+        <ion-label>Inicio</ion-label>
+        <ion-icon name="home-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="cabins">
+        <ion-label>Cabañas</ion-label>
+        <ion-icon name="cabin"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="bookings">
+        <ion-label>Reservas</ion-label>
+        <ion-icon name="ticket-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="clients">
+        <ion-label>Clientes</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="disccounts">
+        <ion-label>Promos</ion-label>
+        <ion-icon name="disccount"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button (click)="logout()">
+        <ion-label>Salir</ion-label>
+        <ion-icon name="log-out-outline"></ion-icon>
+    </ion-tab-button>
+</ion-tab-bar>

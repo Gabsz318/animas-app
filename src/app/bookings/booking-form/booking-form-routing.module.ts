@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: BookingFormPage
+  },
+  {
+    path: ':bookingId',
+    component: BookingFormPage
   }
 ];
 

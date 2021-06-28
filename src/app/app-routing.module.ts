@@ -26,8 +26,9 @@ const routes: Routes = [
     path: 'home-readonly',
     canActivate:[AuthGuard],
     loadChildren: () => import('./home-readonly/home-readonly.module').then( m => m.HomeReadonlyPageModule)
-  },  {
-    path: 'cabin',
+  },
+  {
+    path: 'cabins',
     loadChildren: () => import('./cabin/cabin.module').then( m => m.CabinPageModule)
   },
   {

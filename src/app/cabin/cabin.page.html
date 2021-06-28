@@ -1,9 +1,57 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>cabin</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>Cabañas</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-grid>
+        <ion-row>
+            <ion-col *ngFor="let cabin of cabins" size="6">
+                <ion-card (click)="editCabin(cabin.id)">
+                    <ion-card-header>
+                        <ion-img src="assets/icon/cabin.svg"></ion-img>
+                        <ion-card-title>
+                            Cabaña {{cabin.cabin_name}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-subtitle class="flex-center">Capacidad:&nbsp; {{cabin.quantity_persons}} personas</ion-card-subtitle>
+                    <ion-card-content class="flex ion-align-items-center ion-justify-content-center">
+                        <ion-icon [style.font-size]="'1.5rem'" [style.color]="status && status[cabin.status] ? status[cabin.status]?.color:''" [name]="status && status[cabin.status] ? status[cabin.status]?.icon:''"></ion-icon>
+                        &nbsp;{{CabinStatus[cabin.status]}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+        <ion-fab-button color="tertiary" (click)="addCabin()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
+<ion-tab-bar slot="bottom">
+    <ion-tab-button href="home-admin">
+        <ion-label>Inicio</ion-label>
+        <ion-icon name="home-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="cabins">
+        <ion-label>Cabañas</ion-label>
+        <ion-icon name="cabin"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="bookings">
+        <ion-label>Reservas</ion-label>
+        <ion-icon name="ticket-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="clients">
+        <ion-label>Clientes</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="disccounts">
+        <ion-label>Promos</ion-label>
+        <ion-icon name="disccount"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button (click)="logout()">
+        <ion-label>Salir</ion-label>
+        <ion-icon name="log-out-outline"></ion-icon>
+    </ion-tab-button>
+</ion-tab-bar>

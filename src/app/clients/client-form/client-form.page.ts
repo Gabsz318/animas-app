@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from './client';
+import { clientFields } from './client-fields';
 
 @Component({
   selector: 'app-client-form',
@@ -6,10 +10,52 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./client-form.page.scss'],
 })
 export class ClientFormPage implements OnInit {
+  constructor(
+    private readonly ngFirestore: AngularFirestore,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+  ) {}
 
-  constructor() { }
+  clientFields = clientFields;
+  clientId: string;
+  client: Client = {
+    name: '',
+    telphone: '',
+    address: '',
+    email: '',
+  };
+  missingFields;
 
   ngOnInit() {
+    this.clientId = this.route.snapshot.params.clientId;
+    if (this.clientId) {
+      this.ngFirestore
+        .collection('clients')
+        .doc(this.clientId)
+        .valueChanges()
+        .subscribe((d) => (this.client = d as Client));
+    }
   }
 
+  save() {
+    if (!this.clientId) {
+      this.ngFirestore.collection('clients').add(this.client);
+      
+      this.router.navigate(['clients']);
+    } else {
+      this.ngFirestore
+        .collection('clients')
+        .doc(this.clientId)
+        .update(this.client)
+        .then(() => {
+          this.router.navigate(['clients']);
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+
+  delete() {
+    this.ngFirestore.doc('clients/' + this.clientId).delete();
+    this.router.navigate(['clients']);
+  }
 }

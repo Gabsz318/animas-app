@@ -19,7 +19,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 
@@ -33,9 +33,4 @@
     background: radial-gradient(circle, rgba(207, 214, 0, 1) 40%, rgba(0, 122, 42, 1) 79%) !important;
     color: white;
     font-weight: bolder;
-}
-
-a.button-native {
-    --padding-start: 8px;
-    --padding-end: 8px;
 }

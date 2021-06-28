@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-home-bookings',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-bookings.page.scss'],
 })
 export class HomeBookingsPage implements OnInit {
+  constructor(private readonly angularFireAuth: AngularFireAuth) {}
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit() {}
+  async logout() {
+    await this.angularFireAuth.signOut();
   }
-
 }

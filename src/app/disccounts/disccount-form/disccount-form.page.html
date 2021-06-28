@@ -1,9 +1,45 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>disccount-form</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>{{disccountId ?'Editar ': 'Crear '}}Promoción {{disccount?.percentage ? disccount?.percentage+ '%': ''}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-fab *ngIf="disccountId" vertical="bottom" horizontal="start" slot="fixed" (click)="delete()">
+        <ion-fab-button color="danger">
+            <ion-icon class="danger" name="trash"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <!-- fab placed to the bottom end-->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="save()">
+        <ion-fab-button color="tertiary">
+            <ion-icon class="white" name="checkmark-done-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-list>
+        <ion-item *ngIf="missingFields">
+            <ion-badge style="width: 100%;" color="danger">
+                Tienes campos sin completar:
+                <p *ngFor="let field of missingFields">
+                    {{field}}
+                </p>
+            </ion-badge>
+        </ion-item>
+        <ion-item *ngFor="let field of disccountFields">
+            <ion-label>{{field.label}}</ion-label>
+            <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="field.type === 'date'">
+                    <ion-datetime [name]="field.fieldName" [required]="field.required" [(ngModel)]="disccount[field.fieldName]"></ion-datetime>
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'number' || field.type === 'text'">
+                    <ion-input [disabled]="field.fieldName === 'cabin_name'" [type]="field.type" [(ngModel)]="disccount[field.fieldName]"></ion-input>
+                </ng-container>
+            </ng-container>
+        </ion-item>
+        <ion-text>
+            <ion-icon [style.color]="status && status[disccount?.status] ? status[disccount?.status]?.color:''" [name]="status && status[disccount?.status] ? status[disccount?.status]?.icon:''">
+            </ion-icon>
+            &nbsp;{{disccount.status}}
+        </ion-text>
+    </ion-list>
 </ion-content>

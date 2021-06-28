@@ -1,9 +1,84 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>booking-form</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="custom-background">
+        <ion-title>{{bookingId ?'Editar ': 'Crear '}}Reserva</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-fab *ngIf="bookingId" vertical="bottom" horizontal="start" slot="fixed" (click)="delete()">
+        <ion-fab-button color="danger">
+            <ion-icon class="danger" name="trash"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <!-- fab placed to the bottom end-->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="save()">
+        <ion-fab-button color="tertiary">
+            <ion-icon name="checkmark-done-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-list *ngIf="booking">
+        <ion-item *ngIf="missingFields">
+            <ion-badge style="width: 100%;" color="danger">
+                Tienes campos sin completar:
+                <p *ngFor="let field of missingFields">
+                    {{field}}
+                </p>
+            </ion-badge>
+        </ion-item>
+        <ion-item *ngFor="let field of bookingFields">
+            <ion-label>{{field.label}} :</ion-label>
+            <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase="field.type === 'date'">
+                    <ion-datetime [name]="field.fieldName" [required]="field.required" [(ngModel)]="booking[field.fieldName]" (ionChange)="dateChange()"></ion-datetime>
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'text-area'">
+                    <ion-textarea [name]="field.fieldName" [required]="field.required" [(ngModel)]="booking[field.fieldName]">
+                    </ion-textarea>
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'number' || field.type === 'text'">
+                    <ion-input [name]="field.fieldName" [required]="field.required" [max]="field?.max" [type]="field.type" [(ngModel)]="booking[field.fieldName]" (ionChange)="onChange($event)"></ion-input>
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'image'">
+                    <input #imgUpload type="file" style="display:none" (change)="onChangeImage($event)" />
+                    <ng-container *ngIf="booking[field.fieldName]">
+                        <ion-button color="primary" (click)="takeVoucher()">
+                            <ion-icon name="camera"></ion-icon> Cambiar
+                        </ion-button>
+                    </ng-container>
+                    <ng-container *ngIf="!booking[field.fieldName]">
+                        <ion-button color="primary" (click)="takeVoucher()">
+                            <ion-icon name="camera"></ion-icon>&nbsp; Subir
+                        </ion-button>
+                    </ng-container>
+                    <img #imageElement style="height:12rem;width:auto" [src]="booking[field.fieldName]">
+                </ng-container>
+                <ng-container *ngSwitchCase="field.type === 'select'">
+                    <ion-select *ngIf="field?.options?.length" [required]="field.required" [disabled]="field.fieldName === 'client_id' && bookingId" [(ngModel)]="booking[field.fieldName]" (ionChange)="onSelectChange()">
+                        <ion-select-option *ngFor="let option of field?.options" [value]="option.value">
+                            {{option.label}}
+                        </ion-select-option>
+                    </ion-select>
+                </ng-container>
+            </ng-container>
+        </ion-item>
+    </ion-list>
+    <div class="flex-center">
+        <ion-text color="primary">
+            <h3>
+                <ion-icon name="logo-usd"></ion-icon>&nbsp; {{booking?.total}}
+            </h3>
+        </ion-text>
+        <br>
+        <ion-text color="secondary">
+            <h6>
+                <ion-icon name="moon"></ion-icon>&nbsp; Número de noches: {{booking?.nights_quantity}}
+            </h6>
+        </ion-text>
+        <br>
+        <ion-text>
+            <ion-icon [style.color]="status && status[booking?.status] ? status[booking?.status]?.color:''" [name]="status && status[booking?.status] ? status[booking?.status]?.icon : ''">
+            </ion-icon>
+            &nbsp;{{booking.status}}
+        </ion-text>
+    </div>
 </ion-content>

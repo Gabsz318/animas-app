@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
+import { CabinStatus } from './cabin-status';
 
 @Component({
   selector: 'app-cabin',
@@ -6,10 +10,51 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cabin.page.scss'],
 })
 export class CabinPage implements OnInit {
+  constructor(
+    private readonly ngFirestore: AngularFirestore,
+    private readonly angularFireAuth: AngularFireAuth,
+    private readonly router: Router
+  ) {}
 
-  constructor() { }
+  cabins: any;
+  CabinStatus = CabinStatus;
+  status = {
+    0: {
+      icon: 'checkmark-circle',
+      color: 'green',
+    },
+    1: {
+      icon: 'lock-closed',
+      color: 'red',
+    },
+    2: {
+      icon: 'bookmarks',
+      color: 'orange',
+    },
+  };
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.ngFirestore
+      .collection('cabins')
+      .snapshotChanges()
+      .subscribe(
+        (d) =>
+          (this.cabins = d.map((t) => ({
+            id: t.payload.doc.id,
+            ...(t.payload.doc.data() as any),
+          })))
+      );
   }
 
+  addCabin() {
+    this.router.navigate(['cabins/cabin-form']);
+  }
+
+  async logout() {
+    await this.angularFireAuth.signOut();
+  }
+
+  editCabin(cabinId: string) {
+    this.router.navigate([`cabins/cabin-form/${cabinId}`]);
+  }
 }
