@@ -1,5 +1,8 @@
 <ion-header>
     <ion-toolbar class="custom-background">
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
         <ion-title>{{disccountId ?'Editar ': 'Crear '}}Promoción {{disccount?.percentage ? disccount?.percentage+ '%': ''}</ion-title>
     </ion-toolbar>
 </ion-header>
