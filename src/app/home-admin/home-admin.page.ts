@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { CabinStatus } from '../cabin/cabin-status';
 
 @Component({
   selector: 'app-home-admin',
@@ -24,10 +25,15 @@ export class HomeAdminPage implements OnInit {
         .replace('@admin.com', '')
         .replace(/^\w/, (c) => c.toUpperCase());
     });
-    this.cabinsOccupated = (
-      await this.ngFirestore.collection('cabins').snapshotChanges().toPromise()
-    )?.length;
-    console.log(this.cabinsOccupated);
+    this.ngFirestore
+      .collection('cabins')
+      .snapshotChanges()
+      .subscribe((d) => {
+        console.log(d);
+        this.cabinsOccupated = d.filter(
+          (d: any) => d.payload.doc.data().status === CabinStatus.Reservada
+        ).length;
+      });
   }
 
   async logout() {

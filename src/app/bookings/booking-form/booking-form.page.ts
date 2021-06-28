@@ -99,13 +99,18 @@ export class BookingFormPage implements OnInit {
       .snapshotChanges()
       .subscribe((d: any[]) => {
         this.cabins = d.map((c) => ({
-          value: c.payload.doc.id,
-          label: c.payload.doc.data().cabin_name,
-          price: c.payload.doc.data().price,
-          status: c.payload.doc.data().status,
+          id: c.payload.doc.id,
+          ...c.payload.doc.data(),
         }));
         this.bookingFields.find((f) => f.fieldName === 'cabin_id').options =
-          this.cabins.filter((f) => f.status === CabinStatus.Disponible);
+          this.cabins
+            .filter((f) => f.status === CabinStatus.Disponible)
+            .map((d) => ({
+              value: d.id,
+              label: d.cabin_name,
+              price: d.price,
+              status: d.status,
+            }));
         this.calculateTotal();
       });
 
@@ -152,11 +157,11 @@ export class BookingFormPage implements OnInit {
     } else {
       this.ngFirestore.collection('bookings').add(this.booking);
     }
-    this.cabins.find((d) => d.cabin_id === this.booking.cabin_id)['status'] =
-      this.booking.voucher ? 'Reservada' : 'Reservando';
-    const cabinUpdate = this.cabins.find(
-      (d) => d.cabin_id === this.booking.cabin_id
-    );
+    this.cabins.find((d) => d.id === this.booking.cabin_id)['status'] = this
+      .booking.voucher
+      ? CabinStatus.Reservada
+      : CabinStatus.Reservando;
+    const cabinUpdate = this.cabins.find((d) => d.id === this.booking.cabin_id);
     await this.ngFirestore
       .collection('cabins')
       .doc(this.booking.cabin_id)
