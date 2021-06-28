@@ -38,6 +38,7 @@ export class HomeAdminPage implements OnInit {
 
   async logout() {
     await this.angularFireAuth.signOut();
+    this.router.navigate(['login']);
   }
 
   addBooking() {

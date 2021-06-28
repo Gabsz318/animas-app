@@ -41,5 +41,6 @@ export class ClientsPage implements OnInit {
 
   async logout() {
     await this.angularFireAuth.signOut();
+    this.router.navigate(['login']);
   }
 }

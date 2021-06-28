@@ -52,6 +52,7 @@ export class CabinPage implements OnInit {
 
   async logout() {
     await this.angularFireAuth.signOut();
+    this.router.navigate(['login']);
   }
 
   editCabin(cabinId: string) {
