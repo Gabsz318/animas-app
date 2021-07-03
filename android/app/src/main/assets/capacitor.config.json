@@ -1,0 +1,6 @@
+{
+	"appId": "animas.bosque.app",
+	"appName": "animas-app",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

@@ -1,5 +1,7 @@
 {
   "name": "animas-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

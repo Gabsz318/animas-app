@@ -174,30 +174,28 @@ export class BookingFormPage implements OnInit {
   }
 
   async takeVoucher() {
-    if (!Camera) {
-      return;
-    }
     const platform = (await Device.getInfo()).operatingSystem;
     let image;
     if (platform === 'windows') {
       this.imgUpload.nativeElement.click();
-    } else {
-      image = await Camera.getPhoto({
-        quality: 75,
-        source: CameraSource.Prompt,
-        correctOrientation: true,
-        allowEditing: false,
-        resultType: CameraResultType.Base64,
-        height: 800, //Test
-        width: 400, //Test
-      });
-    }
-    if (!image.base64String) {
       return;
     }
-    // Can be set to the src of an image now
-    this.booking.voucher = image.base64String;
-    this.booking.status = 'Pagado';
+    try {
+      image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+      });
+      console.log('IMAGEN_64',image.base64String)
+      if (!image.base64String) {
+        return;
+      }
+      // Can be set to the src of an image now
+      this.booking.voucher = `data:image/png;base64,${image.base64String}`;
+      this.booking.status = 'Pagado';
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   onChange(args) {
