@@ -2,7 +2,7 @@ export const cabinFields = [
   {
     label: '# de cabaña',
     type: 'number',
-    required: false,
+    required: true,
     fieldName: 'cabin_name',
   },
   {

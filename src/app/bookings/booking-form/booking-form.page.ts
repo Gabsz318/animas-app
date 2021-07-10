@@ -13,6 +13,7 @@ import {
 import { Device } from '@capacitor/device';
 import { CabinStatus } from 'src/app/cabin/cabin-status';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Cabin } from 'src/app/cabin/cabin-form/cabin';
 
 @Component({
   selector: 'app-booking-form',
@@ -47,7 +48,7 @@ export class BookingFormPage implements OnInit {
     status: 'Pendiente',
   };
   missingFields;
-  cabins;
+  cabins: any[];
   tokenId: string;
   status = {
     Pagado: {
@@ -83,8 +84,14 @@ export class BookingFormPage implements OnInit {
     this.loadData();
   }
 
-  delete() {
+  async delete() {
     this.ngFirestore.doc('bookings/' + this.bookingId).delete();
+    const currentCabin = this.cabins.find(c => c.id === this.booking.cabin_id);
+    currentCabin.status = CabinStatus.Disponible;
+    await this.ngFirestore
+    .collection('cabins')
+    .doc(this.booking.cabin_id)
+    .update(currentCabin);
     this.router.navigate(['bookings']);
   }
 

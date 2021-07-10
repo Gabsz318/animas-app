@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { CabinStatus } from './cabin-status';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-cabin',
@@ -39,10 +40,10 @@ export class CabinPage implements OnInit {
       .snapshotChanges()
       .subscribe(
         (d) =>
-          (this.cabins = d.map((t) => ({
+          (this.cabins = _.orderBy(d.map((t) => ({
             id: t.payload.doc.id,
             ...(t.payload.doc.data() as any),
-          })))
+          }))), 'cabin_name', 'asc')
       );
   }
 
