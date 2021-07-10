@@ -1,20 +1,43 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>home-bookings</ion-title>
+    <ion-toolbar class="custom-background">
+        <ion-title>Bienvenido {{user}}</ion-title>
     </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-text color="dark">
+                    <h2>Las cabañas rentadas hoy son:</h2>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+        <ion-row class="ion-align-items-end">
+            <ion-col>
+                <div class="home-admin__cabins">
+                    <ion-text color="primary">
+                        <h1>{{cabinsOccupated}}</h1>
+                    </ion-text>
+                    <img src="assets/icon/cabin.svg" height="150">
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div class="home-admin__cabins">
+                    <ion-button color="secondary" tappable (click)="addBooking()">
+                        Reservar cabaña
+                        <ion-ripple-effect></ion-ripple-effect>
+                    </ion-button>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
 <ion-tab-bar slot="bottom">
-    <ion-tab-button href="./home-admin">
+    <ion-tab-button href="./home-bookings">
         <ion-label>Inicio</ion-label>
         <ion-icon name="home-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button href="./cabins">
-        <ion-label>Cabañas</ion-label>
-        <ion-icon name="cabin"></ion-icon>
     </ion-tab-button>
     <ion-tab-button href="./bookings">
         <ion-label>Reservas</ion-label>
@@ -23,10 +46,6 @@
     <ion-tab-button href="./clients">
         <ion-label>Clientes</ion-label>
         <ion-icon name="people-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button href="./disccounts">
-        <ion-label>Promos</ion-label>
-        <ion-icon name="disccount"></ion-icon>
     </ion-tab-button>
     <ion-tab-button (click)="logout()">
         <ion-label>Salir</ion-label>

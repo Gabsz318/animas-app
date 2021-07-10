@@ -20,17 +20,24 @@ export class LoginPage {
   password: string;
 
   async login() {
-   const loader = await this.loadingController.create({
-      message: 'Por favor espera...',});
-      await loader.present();
-     this.angularFireAuth.signInWithEmailAndPassword(this.username, this.password).then(async u => {
-
-       this.error = null;
-       await loader.dismiss();
-       this.router.navigate(['home-admin']);
-     }).catch(async (error) => {
-       this.error = error;
-       await loader.dismiss();
-     });
+    const loader = await this.loadingController.create({
+      message: 'Por favor espera...',
+    });
+    await loader.present();
+    this.angularFireAuth
+      .signInWithEmailAndPassword(this.username, this.password)
+      .then(async (u) => {
+        this.error = null;
+        await loader.dismiss();
+        if(u.user.email.endsWith('@captura.com')) {
+          this.router.navigate(['home-bookings']);
+        } else {
+          this.router.navigate(['home-admin']);
+        }
+      })
+      .catch(async (error) => {
+        this.error = error;
+        await loader.dismiss();
+      });
   }
 }

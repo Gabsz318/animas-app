@@ -18,8 +18,13 @@ export class BookingsPage implements OnInit {
   ) {}
 
   bookings: any;
+  isBookingUser: boolean;
 
   async ngOnInit() {
+    this.angularFireAuth.authState.subscribe(
+      (authState) =>
+        (this.isBookingUser = authState.email.endsWith('@captura.com'))
+    );
     let clients: Client[];
     let cabins: Cabin[];
     this.ngFirestore
@@ -49,10 +54,18 @@ export class BookingsPage implements OnInit {
         console.log(cabins, clients);
         this.bookings = d.map((t: any) => ({
           id: t.payload.doc.id,
-          cabinName: cabins.find(d => d.$key === t.payload.doc.data().cabin_id),
-          clientName: clients.find(d => d.$key === t.payload.doc.data().client_id),
-          formattedStartDate: new Date(t.payload.doc.data().start_date).toLocaleDateString(),
-          formattedEndDate: new Date(t.payload.doc.data().end_date).toLocaleDateString(),
+          cabinName: cabins.find(
+            (d) => d.$key === t.payload.doc.data().cabin_id
+          ),
+          clientName: clients.find(
+            (d) => d.$key === t.payload.doc.data().client_id
+          ),
+          formattedStartDate: new Date(
+            t.payload.doc.data().start_date
+          ).toLocaleDateString(),
+          formattedEndDate: new Date(
+            t.payload.doc.data().end_date
+          ).toLocaleDateString(),
           ...(t.payload.doc.data() as any),
         }));
       });

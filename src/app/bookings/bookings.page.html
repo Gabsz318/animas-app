@@ -22,11 +22,11 @@
     </ion-fab>
 </ion-content>
 <ion-tab-bar slot="bottom">
-    <ion-tab-button href="home-admin">
+    <ion-tab-button href="{{isBookingUser? 'home-bookings': 'home-admin'}}">
         <ion-label>Inicio</ion-label>
         <ion-icon name="home-outline"></ion-icon>
     </ion-tab-button>
-    <ion-tab-button href="cabins">
+    <ion-tab-button *ngIf="!isBookingUser" href="cabins">
         <ion-label>Cabañas</ion-label>
         <ion-icon name="cabin"></ion-icon>
     </ion-tab-button>
@@ -38,7 +38,7 @@
         <ion-label>Clientes</ion-label>
         <ion-icon name="people-outline"></ion-icon>
     </ion-tab-button>
-    <ion-tab-button href="disccounts">
+    <ion-tab-button *ngIf="!isBookingUser" href="disccounts">
         <ion-label>Promos</ion-label>
         <ion-icon name="disccount"></ion-icon>
     </ion-tab-button>

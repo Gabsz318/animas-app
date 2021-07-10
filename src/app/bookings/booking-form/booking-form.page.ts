@@ -25,6 +25,7 @@ export class BookingFormPage implements OnInit {
   @ViewChild('imgUpload', { static: false }) private imgUpload: ElementRef;
 
   constructor(
+    private readonly angularFireAuth: AngularFireAuth,
     private readonly ngFirestore: AngularFirestore,
     private readonly route: ActivatedRoute,
     private readonly router: Router
@@ -62,8 +63,13 @@ export class BookingFormPage implements OnInit {
       color: 'orange',
     },
   };
+  isBookingUser: boolean;
 
-  ngOnInit() {
+   ngOnInit() {
+    this.angularFireAuth.authState.subscribe(
+      (authState) =>
+        (this.isBookingUser = authState.email.endsWith('@captura.com'))
+    );
     this.bookingId = this.route.snapshot.params.bookingId;
     if (this.bookingId) {
       this.ngFirestore

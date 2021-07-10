@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-fab *ngIf="bookingId" vertical="bottom" horizontal="start" slot="fixed" (click)="delete()">
+    <ion-fab *ngIf="bookingId && !isBookingUser" vertical="bottom" horizontal="start" slot="fixed" (click)="delete()">
         <ion-fab-button color="danger">
             <ion-icon class="danger" name="trash"></ion-icon>
         </ion-fab-button>

@@ -19,7 +19,13 @@ export class ClientsPage implements OnInit {
 
   clients: any[];
 
-  ngOnInit() {
+  isBookingUser: boolean;
+
+   ngOnInit() {
+    this.angularFireAuth.authState.subscribe(
+      (authState) =>
+        (this.isBookingUser = authState.email.endsWith('@captura.com'))
+    );
     this.ngFirestore
     .collection('clients')
     .snapshotChanges()

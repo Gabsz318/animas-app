@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from './client';
@@ -12,6 +13,7 @@ import { clientFields } from './client-fields';
 export class ClientFormPage implements OnInit {
   constructor(
     private readonly ngFirestore: AngularFirestore,
+    private readonly angularFireAuth: AngularFireAuth,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
@@ -25,8 +27,13 @@ export class ClientFormPage implements OnInit {
     email: '',
   };
   missingFields;
+  isBookingUser: boolean;
 
-  ngOnInit() {
+   ngOnInit() {
+    this.angularFireAuth.authState.subscribe(
+      (authState) =>
+        (this.isBookingUser = authState.email.endsWith('@captura.com'))
+    );
     this.clientId = this.route.snapshot.params.clientId;
     if (this.clientId) {
       this.ngFirestore
