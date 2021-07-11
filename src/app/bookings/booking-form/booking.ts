@@ -11,5 +11,6 @@ export interface Booking {
     notes: string;
     nights_quantity: number;
     status: string;
+    deleted: boolean;
   }
   

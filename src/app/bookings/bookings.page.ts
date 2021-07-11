@@ -51,7 +51,6 @@ export class BookingsPage implements OnInit {
       .collection('bookings')
       .snapshotChanges()
       .subscribe((d) => {
-        console.log(cabins, clients);
         this.bookings = d.map((t: any) => ({
           id: t.payload.doc.id,
           cabinName: cabins.find(
@@ -68,6 +67,7 @@ export class BookingsPage implements OnInit {
           ).toLocaleDateString(),
           ...(t.payload.doc.data() as any),
         }));
+        this.bookings = this.bookings.filter(b => !b.deleted);
       });
   }
 

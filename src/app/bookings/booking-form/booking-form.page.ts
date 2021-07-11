@@ -46,6 +46,7 @@ export class BookingFormPage implements OnInit {
     notes: '',
     nights_quantity: 0,
     status: 'Pendiente',
+    deleted: false,
   };
   missingFields;
   cabins: any[];
@@ -66,7 +67,7 @@ export class BookingFormPage implements OnInit {
   };
   isBookingUser: boolean;
 
-   ngOnInit() {
+  ngOnInit() {
     this.angularFireAuth.authState.subscribe(
       (authState) =>
         (this.isBookingUser = authState.email.endsWith('@captura.com'))
@@ -85,13 +86,19 @@ export class BookingFormPage implements OnInit {
   }
 
   async delete() {
-    this.ngFirestore.doc('bookings/' + this.bookingId).delete();
-    const currentCabin = this.cabins.find(c => c.id === this.booking.cabin_id);
+    this.booking.deleted = true;
+    await this.ngFirestore
+      .collection('bookings')
+      .doc(this.bookingId)
+      .update(this.booking);
+    const currentCabin = this.cabins.find(
+      (c) => c.id === this.booking.cabin_id
+    );
     currentCabin.status = CabinStatus.Disponible;
     await this.ngFirestore
-    .collection('cabins')
-    .doc(this.booking.cabin_id)
-    .update(currentCabin);
+      .collection('cabins')
+      .doc(this.booking.cabin_id)
+      .update(currentCabin);
     this.router.navigate(['bookings']);
   }
 
@@ -160,8 +167,6 @@ export class BookingFormPage implements OnInit {
       this.booking.start_date
     );
     this.booking.end_date = this.removeDateCharacters(this.booking.end_date);
-    const fields = Object.keys(this.booking) as string[];
-    const data = Object.values(this.booking) as string[];
     if (this.bookingId) {
       await this.ngFirestore
         .collection('bookings')
@@ -199,7 +204,7 @@ export class BookingFormPage implements OnInit {
         allowEditing: false,
         resultType: CameraResultType.Base64,
       });
-      console.log('IMAGEN_64',image.base64String)
+      console.log('IMAGEN_64', image.base64String);
       if (!image.base64String) {
         return;
       }

@@ -29,7 +29,7 @@ export class CabinFormPage implements OnInit {
     living_room_quantity: 0,
     price: 0,
     plants_quantity: 0,
-    status: CabinStatus.Ocupada,
+    status: CabinStatus.Disponible,
   };
   cabinFields = cabinFields;
 
