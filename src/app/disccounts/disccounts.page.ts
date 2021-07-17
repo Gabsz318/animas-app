@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-disccounts',
@@ -9,7 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./disccounts.page.scss'],
 })
 export class DisccountsPage implements OnInit {
-
   constructor(
     private readonly ngFirestore: AngularFirestore,
     private readonly angularFireAuth: AngularFireAuth,
@@ -20,25 +20,25 @@ export class DisccountsPage implements OnInit {
   status = {
     Activa: {
       icon: 'checkmark-circle',
-      color: 'green'
+      color: 'green',
     },
     Caducada: {
       icon: 'lock-closed',
-      color: 'red'
-    }
+      color: 'red',
+    },
   };
 
   ngOnInit() {
     this.ngFirestore
-    .collection('disccounts')
-    .snapshotChanges()
-    .subscribe(
-      (d) =>
-        (this.disccounts = d.map((t) => ({
+      .collection('disccounts')
+      .snapshotChanges()
+      .subscribe((d) => {
+        const disccounts = d.map((t) => ({
           id: t.payload.doc.id,
           ...(t.payload.doc.data() as any),
-        })))
-    );
+        }));
+        this.disccounts = _.orderBy(disccounts, 'percentage', 'asc');
+      });
   }
   createCabin() {
     this.router.navigate(['disccounts/disccount-form']);

@@ -14,11 +14,13 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { ShowHidePasswordComponent } from './login/show-hide-password/show-hide-password.component';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
+  exports: [],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 

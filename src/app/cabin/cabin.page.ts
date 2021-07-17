@@ -38,13 +38,13 @@ export class CabinPage implements OnInit {
     this.ngFirestore
       .collection('cabins')
       .snapshotChanges()
-      .subscribe(
-        (d) =>
-          (this.cabins = _.orderBy(d.map((t) => ({
-            id: t.payload.doc.id,
-            ...(t.payload.doc.data() as any),
-          }))), 'cabin_name', 'asc')
-      );
+      .subscribe((d) => {
+        const cabins = d.map((t) => ({
+          id: t.payload.doc.id,
+          ...(t.payload.doc.data() as any),
+        }));
+        this.cabins = _.orderBy(cabins, 'cabin_name', 'asc');
+      });
   }
 
   addCabin() {

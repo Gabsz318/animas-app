@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { Client } from './client-form/client';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-clients',
@@ -10,7 +10,6 @@ import { Client } from './client-form/client';
   styleUrls: ['./clients.page.scss'],
 })
 export class ClientsPage implements OnInit {
-
   constructor(
     private readonly ngFirestore: AngularFirestore,
     private readonly angularFireAuth: AngularFireAuth,
@@ -21,21 +20,21 @@ export class ClientsPage implements OnInit {
 
   isBookingUser: boolean;
 
-   ngOnInit() {
+  ngOnInit() {
     this.angularFireAuth.authState.subscribe(
       (authState) =>
         (this.isBookingUser = authState.email.endsWith('@captura.com'))
     );
     this.ngFirestore
-    .collection('clients')
-    .snapshotChanges()
-    .subscribe(
-      (d) =>
-        (this.clients = d.map((t) => ({
+      .collection('clients')
+      .snapshotChanges()
+      .subscribe((d) => {
+        const clients = d.map((t) => ({
           id: t.payload.doc.id,
           ...(t.payload.doc.data() as any),
-        })))
-    );
+        }));
+        this.clients = _.orderBy(clients, 'name', 'asc');
+      });
   }
   createCabin() {
     this.router.navigate(['clients/client-form']);
