@@ -4,11 +4,7 @@
   },
   "targets": {
     "animas-app-444d7": {
-      "hosting": {
-        "app": [
-          "animas-app-444d7"
-        ]
-      }
+      "hosting": {}
     }
   }
 }
